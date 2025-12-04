@@ -15,5 +15,9 @@ class ProfileView(LoginRequiredMixin, View):
 
         if form.is_valid():
             form.save()
+            # Refresh the user object from the database to get updated data
+            request.user.refresh_from_db()
+            # Re-instantiate the form with updated user data to show new values in template
+            form = EditUserForm(instance=request.user)
 
         return render(request, "accounts_app/profile.html", {"form": form, "invite_user_form": invite_user_form})
