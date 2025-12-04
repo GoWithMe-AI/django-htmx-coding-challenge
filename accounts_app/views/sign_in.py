@@ -22,7 +22,7 @@ def sign_in(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
-            user = authenticate(request, email=email, password=password)
+            user = authenticate(request, username=email, password=password)
             if user:
                 login(request, user)
                 return redirect(request.GET.get("next", "/"))
