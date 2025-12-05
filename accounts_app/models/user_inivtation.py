@@ -23,9 +23,39 @@ class UserInvitation(models.Model):
     expires_at = models.DateTimeField(default=get_expiration_datetime)
 
     def send_invitation_email(self):
+        message = f"""
+{'=' * 70}
+                    INVITATION EMAIL SENT
+{'=' * 70}
+
+To: {self.email}
+From: {self.invited_by.full_name} ({self.invited_by.email})
+Invitation ID: {self.id}
+Expires At: {self.expires_at.strftime('%Y-%m-%d %H:%M:%S UTC')}
+
+Subject: You have been invited to join our platform
+
+Message:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hello,
+
+You have been invited to join our platform by {self.invited_by.full_name}.
+
+To accept this invitation, please click on the link below:
+{settings.SENDING_DOMAIN}/invite/{self.id}
+
+This invitation will expire on {self.expires_at.strftime('%B %d, %Y at %I:%M %p UTC')}.
+
+Kind regards,
+The Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{'=' * 70}
+"""
         send_mail(
-            "You have been invited to join our platform",
-            f"Click here to join: { settings.SENDING_DOMAIN }/invite/{self.id}",
-            "Kind regards, The Team",
-            [self.email],
+            subject="You have been invited to join our platform",
+            message=message,
+            from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings, or 'webmaster@localhost' by default
+            recipient_list=[self.email],
         )

@@ -16,6 +16,48 @@
               href="{% static 'images/favicon.png' %}"
               type="image/x-icon">
         <link rel="stylesheet" href="{% static 'src/styles.css' %}">
+        <style>
+            /* Highest priority CSS for invite modal - must override all parent styles */
+            #invite-user-modal {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                z-index: 9999 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Center modal both horizontally and vertically */
+            #invite-user-modal.open {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            #invite-user-modal.open > div {
+                opacity: 1 !important;
+                margin-top: 0 !important;
+                z-index: 10000 !important;
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 100% !important;
+            }
+            
+            #invite-user-modal.open > div > div {
+                opacity: 1 !important;
+                display: flex !important;
+                visibility: visible !important;
+                background-color: white !important;
+                width: 100% !important;
+                max-width: 28rem !important;
+            }
+        </style>
         <script src="{% static 'src/preline.js' %}"></script>
         <script src="{% static 'src/htmx.min.js' %}"></script>
         <script src="{% static 'src/htmx-multi-swap.js' %}"></script>
@@ -30,6 +72,9 @@
                 This is an empty page and should never be seen.
             {% endblock content %}
         </div>
+        
+        {% block modals %}{% endblock modals %}
+        
         <script>
             // noinspection JSUnresolvedReference
             window.htmx.onLoad(function() {

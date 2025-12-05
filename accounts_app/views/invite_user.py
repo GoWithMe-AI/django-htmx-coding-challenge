@@ -16,14 +16,17 @@ class InviteUserView(LoginRequiredMixin, View):
         form = InviteUserForm(request.POST)
         
         if form.is_valid():
+            email = form.cleaned_data["email"]
             # We could further improve this here to first check if an invitation for this email already exists and is not expired
-            UserInvitation.objects.filter(email=form.cleaned_data["email"]).delete()
+            UserInvitation.objects.filter(email=email).delete()
 
-            invitation = UserInvitation(email=form.cleaned_data["email"], invited_by=request.user)
+            invitation = UserInvitation(email=email, invited_by=request.user)
             invitation.save()
 
             invitation.send_invitation_email()
 
-            return render(request, "accounts_app/profile.html", {"invite_user_form": form, "invited": True})
+            # Reset form to clear the input field
+            form = InviteUserForm()
+            return render(request, "accounts_app/invite_modal_content.html", {"invite_user_form": form, "invited": True, "invited_email": email})
         else:
-            return render(request, "accounts_app/profile.html", {"invite_user_form": form})
+            return render(request, "accounts_app/invite_modal_content.html", {"invite_user_form": form, "invited": False})

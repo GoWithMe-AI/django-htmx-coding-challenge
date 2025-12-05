@@ -1,0 +1,38 @@
+{% if invited %}
+    <div class="mb-4">
+        <p class="text-sm text-green-600 dark:text-green-400 mb-4">
+            Invitation sent successfully to {{ invited_email }}!
+        </p>
+    </div>
+{% endif %}
+
+<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+    Enter the email address of the user you would like to invite.
+</p>
+<form id="invite-user-form"
+      hx-post="{% url 'invite_user' %}"
+      hx-target="#invite-user-modal-content"
+      hx-swap="innerHTML">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="invite-email" class="block text-sm font-medium mb-2 dark:text-white">Email</label>
+        {{ invite_user_form.email }}
+        {% if invite_user_form.email.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ invite_user_form.email.errors.0 }}</p>
+        {% endif %}
+    </div>
+    <div class="flex justify-end gap-x-2">
+        <button type="button"
+                id="close-modal-btn"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700"
+                data-hs-overlay-close="#invite-user-modal"
+                onclick="const modal = document.getElementById('invite-user-modal'); if (modal) { modal.classList.add('hidden'); modal.classList.remove('open', 'opened'); const backdrop = document.querySelector('.hs-overlay-backdrop'); if (backdrop) { backdrop.remove(); } }">
+            Close
+        </button>
+        <button type="submit"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+            Invite User
+        </button>
+    </div>
+</form>
+
