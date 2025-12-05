@@ -2,6 +2,10 @@
 
 Welcome to the e1+ coding challenge. This repo is a simple web application with a login and a user management page. It contains errors, code smells and it is incomplete.
 
+
+https://github.com/user-attachments/assets/4f6d26b9-f2fd-4907-9cc1-cf8ff20f0365
+
+
 ## How to
 
 - Download the repository, remove the .git folder and upload the repo to your github/gitlab/bitbucket/... account as public repository.
